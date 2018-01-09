@@ -43,14 +43,26 @@ export default class App extends React.Component {
     // JSON body parse
     response = await response.json();
 
+    let players = [];
+
     // Get real players from fantasy-players
-    let players = response.included.map((p, i) => {
-      return {
+    response.included.map((p, i) => {
+      // Add is starting to player information
+      let allPlayerInfo = {
         ...p,
         is_starting: response.data[i].attributes.is_starting
-      }
+      };
+
+      // If starting, add to beginning, bench add to end.
+      (response.data[i].attributes.is_starting) ?
+        players.unshift(allPlayerInfo) :
+        players.push(allPlayerInfo)
+
+      return allPlayerInfo;
     });
 
+    console.log(players);
+    
     // Set state with updated player list
     this.setState({ players, isRefreshing: false });
   }
@@ -78,8 +90,8 @@ export default class App extends React.Component {
               </Body>
               <Right style={{minWidth: 100}}>
               {(item.is_starting) ?
-                <Text style={{...styles.isStarting, ...styles.startingTheme}} note>STARTING</Text> :
-                <Text style={{...styles.isStarting, ...styles.benchTheme}}note>BENCH</Text>
+                <Text style={{...styles.isStarting, ...styles.startingTheme}}>START</Text> :
+                <Text style={{...styles.isStarting, ...styles.benchTheme}}>BENCH</Text>
               }
               </Right>
             </ListItem>
