@@ -9,10 +9,12 @@ Run this project with Expo
 **npm**
 
 ``` npm i --save ```
+
 ``` npm run start ```
 
 
 **yarn**
 
 ``` yarn ```
+
 ``` yarn start ```
